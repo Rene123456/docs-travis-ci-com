@@ -16,11 +16,12 @@ deploy:
   role: "arn:aws:iam::0123456789012:role/lambda_basic_execution"
   runtime: "nodejs4.3"
   handler_name: "handler"
-  access_key_id: "AWS ACCESS KEY ID"
-  secret_access_key: "AWS SECRET ACCESS KEY"
 ```
+{: data-file=".travis.yml"}
 
-It is recommended that you encrypt your password.
+AWS credentials can be passed in via the `access_key_id` and `secret_access_key` parameters.
+If these are not set, Travis will fall back on the standard `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` environment variables.
+If you choose to provide parameters, it is recommended that you encrypt your secret access key.
 Assuming you have the Travis CI command line client installed, you can do it like this:
 
 ```bash
@@ -69,7 +70,7 @@ The AWS user that Travis deploys as must have the following IAM permissions in o
             "Sid": "DeployCode",
             "Effect": "Allow",
             "Action": [
-                "lambda:UploadFunction",
+                "lambda:GetFunction",
                 "lambda:UpdateFunctionCode",
                 "lambda:UpdateFunctionConfiguration"
             ],

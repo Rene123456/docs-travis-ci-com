@@ -15,6 +15,7 @@ deploy:
   secret-access-key: SECRET-ACCESS-KEY
   app-id: APP-ID
 ```
+{: data-file=".travis.yml"}
 
 You can obtain your AWS Access Key Id and your AWS Secret Access Key from [here](https://console.aws.amazon.com/iam/home?#security_credential). It is recommended to encrypt your AWS Secret Access Key. Assuming you have the `travis` client installed, you can do it like this:
 
@@ -42,6 +43,7 @@ deploy:
   app-id: APP-ID
   migrate: true
 ```
+{: data-file=".travis.yml"}
 
 ### Branch to deploy from
 
@@ -57,6 +59,7 @@ deploy:
   app-id: APP-ID
   on: production
 ```
+{: data-file=".travis.yml"}
 
 Alternatively, you can also configure it to deploy from all branches:
 
@@ -69,6 +72,7 @@ deploy:
   on:
     all_branches: true
 ```
+{: data-file=".travis.yml"}
 
 Builds triggered from Pull Requests will never trigger a deploy.
 
@@ -86,6 +90,7 @@ deploy:
   app-id: APP-ID
   skip_cleanup: true
 ```
+{: data-file=".travis.yml"}
 
 ### Waiting for Deployments
 
@@ -101,9 +106,27 @@ deploy:
   app-id: APP-ID
   wait-until-deployed: true
 ```
+{: data-file=".travis.yml"}
 
 Travis CI will wait up to 10 minutes for the deploy to complete, and log
 whether it succeeded.
+
+### Updating App Settings after successful Deployments
+
+By default the deploy from Travis CI triggers a deployment on OpsWorks but does not touch any other configuration. To also update the revision in App Settings use the **update-app-on-success** option. In addition you have to set the **wait-until-deployed** option:
+
+```yaml
+deploy:
+  provider: opsworks
+  access-key-id: ACCESS-KEY-ID
+  secret-access-key: SECRET-ACCESS-KEY
+  app-id: APP-ID
+  wait-until-deployed: true
+  update-app-on-success: true
+```
+{: data-file=".travis.yml"}
+
+Travis CI will wait until the deployment returns successful and only then update the revision in App Settings.
 
 ### Conditional releases
 
@@ -122,3 +145,4 @@ after_deploy:
   - ./after_deploy_1.sh
   - ./after_deploy_2.sh
 ```
+{: data-file=".travis.yml"}
